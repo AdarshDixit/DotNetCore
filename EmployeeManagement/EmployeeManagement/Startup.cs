@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -25,6 +21,8 @@ namespace EmployeeManagement
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // Adding mvc services
+            services.AddMvc(mvcOptions => mvcOptions.EnableEndpointRouting = false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,14 +35,13 @@ namespace EmployeeManagement
 
             app.UseRouting();
 
-            // Default code
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapGet("/", async context =>
-            //    {
-            //        await context.Response.WriteAsync(this.config.GetValue<string>("RandomUrl"));
-            //    });
-            //});
+            app.UseStaticFiles();
+            app.UseMvcWithDefaultRoute();
+            app.Run(async (context) =>
+            {
+                await context.Response.WriteAsync("Route not found!!!");
+            });
+
 
             //Inject ILogger<Startup> logger in Configure()
             //// Middleware 1
@@ -89,15 +86,10 @@ namespace EmployeeManagement
             //app.UseDefaultFiles(defaultFilesOptions);
 
             // Adding static files from wwwroot (https://localhost:44380/images/Image.jpg)
-            app.UseStaticFiles();
+            //app.UseStaticFiles();
 
             // Adding file server middleware to replace UseDefaultFiles and UseStaticFiles
-            app.UseFileServer();
-
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Final Response");
-            });
+            //app.UseFileServer();
         }
     }
 }
