@@ -1,0 +1,35 @@
+﻿@model EmployeeManagement.Model.EmployeesViewModel
+@{
+    ViewData["Title"] = "AllEmployees";
+}
+<body>
+    <table style="border:double;">
+        <thead>
+            List of Employees
+        </thead>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Department</th>
+            </tr>
+            @foreach (var employee in Model.Employees)
+            { 
+                <tr>
+                    <td>
+                        @employee.Id
+                    </td>
+                     <td>
+                        @employee.Name
+                    </td>
+                     <td>
+                        @employee.Department.ToString();
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+
+
+

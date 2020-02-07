@@ -1,3 +1,4 @@
+using EmployeeManagement.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,6 +24,7 @@ namespace EmployeeManagement
         {
             // Adding mvc services
             services.AddMvc(mvcOptions => mvcOptions.EnableEndpointRouting = false);
+            services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,7 +38,7 @@ namespace EmployeeManagement
             app.UseRouting();
 
             app.UseStaticFiles();
-            app.UseMvcWithDefaultRoute();
+            app.UseMvc();
             app.Run(async (context) =>
             {
                 await context.Response.WriteAsync("Route not found!!!");
