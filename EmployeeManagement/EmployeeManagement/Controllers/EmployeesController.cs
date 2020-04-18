@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeManagement.Controllers
 {
+    [Route("Employees")]
     public class EmployeesController : Controller
     {
         private IEmployeeRepository employeeRepository;
@@ -16,12 +17,26 @@ namespace EmployeeManagement.Controllers
             this.employeeRepository = employeeRepository;
         } 
         [Route("")]
-        [Route("Employees/AllEmployees")]
-        public ViewResult AllEmployees()
+        [Route("GetEmployees")]
+        public ViewResult GetEmployees()
         {
             var model = new EmployeesViewModel
             {
                 Employees = employeeRepository.GetEmployees()
+            };
+            return View(model);
+        }
+
+        [Route("GetEmployee/{id}")]
+        public ViewResult GetEmployee(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return View(new EmployeeViewModel { ErrorMessage = "Please provide an Id"});
+            }
+            var model = new EmployeeViewModel
+            {
+                Employee = employeeRepository.GetEmployee(id.Value)
             };
             return View(model);
         }

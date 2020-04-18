@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Model
 {
-    public class EmployeesViewModel
+    public class EmployeeViewModel
     {
-        public List<Employee> Employees { get; set; }
+        public Employee Employee { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }
