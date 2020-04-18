@@ -1,16 +1,11 @@
-﻿@model EmployeeManagement.Model.EmployeeViewModel
+﻿@model EmployeeViewModel
 
 @{
-    ViewData["Title"] = "GetEmployee";
+    ViewBag.Title = "GetEmployee";
 }
-<body>
     <h1>Employee detail</h1>
-    <ul>
-        <li>
-            <p><b>Employee Id: </b>@Model.Employee.Id</p>
-            <p><b>Employee Name: </b>@Model.Employee.Name</p>
-            <p><b>Employee Designation: </b>@Model.Employee.Designation</p>
-            <p><b>Employee Department: </b>@Model.Employee.Department</p>
-        </li>
-    </ul>
-</body>
+
+    <p><b>Employee Id: </b>@Model.Employee.Id</p>
+    <p><b>Employee Name: </b>@Model.Employee.Name</p>
+    <p><b>Employee Designation: </b>@Model.Employee.Designation</p>
+    <p><b>Employee Department: </b>@Model.Employee.Department</p>

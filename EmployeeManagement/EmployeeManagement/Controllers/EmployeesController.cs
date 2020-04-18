@@ -17,6 +17,7 @@ namespace EmployeeManagement.Controllers
             this.employeeRepository = employeeRepository;
         } 
         [Route("")]
+        [Route("~/")]
         [Route("GetEmployees")]
         public ViewResult GetEmployees()
         {
@@ -39,6 +40,26 @@ namespace EmployeeManagement.Controllers
                 Employee = employeeRepository.GetEmployee(id.Value)
             };
             return View(model);
+        }
+
+        [HttpGet]
+        [Route("Create")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Route("Create")]
+        public IActionResult Create(Employee employee)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var emp = employeeRepository.Add(employee);
+                return RedirectToAction("GetEmployee", "Employees", new { id = emp.Id });
+            }
+            return View();
         }
     }
 }

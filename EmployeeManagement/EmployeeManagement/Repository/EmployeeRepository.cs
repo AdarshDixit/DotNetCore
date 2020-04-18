@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Repository
 {
-    public class EmployeeRepository : IEmployeeRepository
+    public class EmployeeRepository
     {
         private List<Employee> employees = new List<Employee>
         {
@@ -24,6 +24,13 @@ namespace EmployeeManagement.Repository
                 Id = 3,Name = "Madhuri Dixit", Department = Department.HR, Designation = "Manager"
             },
         };
+
+        public Employee Add(Employee employee)
+        {
+            employee.Id = employees.Max(x => x.Id) + 1;
+            employees.Add(employee);
+            return employee;
+        }
 
         public Employee GetEmployee(int id)
         {

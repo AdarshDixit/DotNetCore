@@ -1,28 +1,23 @@
-﻿@model EmployeeManagement.Model.EmployeesViewModel;
+﻿@model EmployeesViewModel;
 @{
-    ViewData["Title"] = "GetEmployees";
+    ViewBag.Title = "GetEmployees";
 }
 
 
-<body>
     <h1>Employee List</h1>
     @if (Model.Employees.Any())
     {
-<ul>
-    @foreach (var employee in Model.Employees)
-    {
-    <li>
         <ul>
-            <li>
-                <p><b>Employee Id: </b>@employee.Id</p>
-                <p><b>Employee Name: </b>@employee.Name</p>
-                <p><b>Employee Designation: </b>@employee.Designation</p>
-                <p><b>Employee Department: </b>@employee.Department</p>
-            </li>
+            @foreach (var employee in Model.Employees)
+            {
+                <li>
+                    <p><b>Employee Id: </b>@employee.Id</p>
+                    <p><b>Employee Name: </b>@employee.Name</p>
+                    <p><b>Employee Designation: </b>@employee.Designation</p>
+                    <p><b>Employee Department: </b>@employee.Department</p>
+                </li>
+            }
         </ul>
-    </li>
-    }
-</ul>
     }
     else
     {
@@ -30,6 +25,3 @@
             No employee found!
         </p>
     }
-
-</body>
-
