@@ -4,24 +4,28 @@
 }
 
 
-    <h1>Employee List</h1>
-    @if (Model.Employees.Any())
-    {
-        <ul>
-            @foreach (var employee in Model.Employees)
-            {
-                <li>
-                    <p><b>Employee Id: </b>@employee.Id</p>
-                    <p><b>Employee Name: </b>@employee.Name</p>
-                    <p><b>Employee Designation: </b>@employee.Designation</p>
-                    <p><b>Employee Department: </b>@employee.Department</p>
-                </li>
-            }
-        </ul>
-    }
-    else
-    {
-        <p>
-            No employee found!
-        </p>
-    }
+<h1>Employee List</h1>
+@if (Model.Employees.Any())
+{
+    <ul>
+        @foreach (var employee in Model.Employees)
+        {
+            var photoPath = "~/images/" + (employee.PhotoPath ?? "noimage.png");
+            <li>
+                <div>
+                    <img src="@photoPath" />
+                </div>
+                <p><b>Employee Id: </b>@employee.Id</p>
+                <p><b>Employee Name: </b>@employee.Name</p>
+                <p><b>Employee Designation: </b>@employee.Designation</p>
+                <p><b>Employee Department: </b>@employee.Department</p>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>
+        No employee found!
+    </p>
+}

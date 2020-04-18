@@ -1,4 +1,5 @@
 ﻿using EmployeeManagement.Enums;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Model
 {
-    public class Employee
+    public class CreateEmployeeViewModel
     {
         public int Id { get; set; }
 
@@ -19,8 +20,9 @@ namespace EmployeeManagement.Model
         public string Designation { get; set; }
 
         // Add nullable enum for validation
-        [Required(ErrorMessage="Please select a value")]
+        [Required(ErrorMessage = "Please select a value")]
         public Department? Department { get; set; }
-        public string PhotoPath { get; set; }
+
+        public IFormFile Photo { get; set; }
     }
 }

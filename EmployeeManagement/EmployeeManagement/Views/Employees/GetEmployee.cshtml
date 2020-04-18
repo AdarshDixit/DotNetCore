@@ -2,10 +2,15 @@
 
 @{
     ViewBag.Title = "GetEmployee";
+    var photoPath = "~/images/" + (Model.Employee.PhotoPath ?? "noimage.png");
 }
-    <h1>Employee detail</h1>
-
+<h1>Employee detail</h1>
+<div>
+    <img src="@photoPath" />
+</div>
+<div>
     <p><b>Employee Id: </b>@Model.Employee.Id</p>
     <p><b>Employee Name: </b>@Model.Employee.Name</p>
     <p><b>Employee Designation: </b>@Model.Employee.Designation</p>
     <p><b>Employee Department: </b>@Model.Employee.Department</p>
+</div>
