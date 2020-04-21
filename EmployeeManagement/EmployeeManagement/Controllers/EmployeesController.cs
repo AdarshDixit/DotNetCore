@@ -23,7 +23,7 @@ namespace EmployeeManagement.Controllers
         } 
         [Route("")]
         [Route("~/")]
-        [Route("GetEmployees")]
+        [Route("Details")]
         public ViewResult GetEmployees()
         {
             var model = new EmployeesViewModel
@@ -33,7 +33,7 @@ namespace EmployeeManagement.Controllers
             return View(model);
         }
 
-        [Route("GetEmployee/{id}")]
+        [Route("Details/{id}")]
         public ViewResult GetEmployee(int? id)
         {
             if (!id.HasValue)
@@ -60,29 +60,82 @@ namespace EmployeeManagement.Controllers
         {
 
             if (ModelState.IsValid)
-            {
-                string uniqueFileName = null;
-
-                if (model.Photo != null)
-                {
-                    string uploadsFolder = Path.Combine(this.hostingEnvironment.WebRootPath, "images");                  
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                   
-                    model.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
-                }
-
+            {               
                 Employee newEmployee = new Employee
                 {
                     Name = model.Name,
                     Designation = model.Designation,
                     Department = model.Department,
-                    PhotoPath = uniqueFileName
+                    PhotoPath = ProcessUploadedFile(model)
                 };
                 var emp = employeeRepository.Add(newEmployee);
                 return RedirectToAction("GetEmployee", "Employees", new { id = emp.Id });
             }
             return View();
+        }
+
+        [HttpGet]
+        [Route("Edit")]
+        public IActionResult Edit(int id)
+        {
+            var emp = employeeRepository.GetEmployee(id);
+            var model = new EditEmployeeViewModel
+            {
+                Id = emp.Id,
+                Name = emp.Name,
+                Department = emp.Department,
+                Designation = emp.Designation,
+                ExistingPhotoPath = emp.PhotoPath
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [Route("Edit")]
+        public IActionResult Edit(EditEmployeeViewModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                Employee employee = employeeRepository.GetEmployee(model.Id);
+                employee.Name = model.Name;
+                employee.Designation = model.Designation;
+                employee.Department = model.Department;
+
+                if (model.Photo != null)
+                {                  
+                    if (model.ExistingPhotoPath != null)
+                    {
+                        string filePath = Path.Combine(hostingEnvironment.WebRootPath,
+                            "images", model.ExistingPhotoPath);
+                        System.IO.File.Delete(filePath);
+                    }
+                    
+                    employee.PhotoPath = ProcessUploadedFile(model);
+                }               
+                Employee updatedEmployee = employeeRepository.Update(employee);
+
+                return RedirectToAction("GetEmployees");
+            }
+            return View();
+        }
+
+        private string ProcessUploadedFile(CreateEmployeeViewModel model)
+        {
+            string uniqueFileName = null;
+
+            if (model.Photo != null)
+            {
+                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.Photo.CopyTo(fileStream);
+                }
+            }
+
+            return uniqueFileName;
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmployeeManagement.Model;
-using EmployeeManagement.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeManagement.Controllers
@@ -11,11 +11,13 @@ namespace EmployeeManagement.Controllers
     [Route("Account")]
     public class AccountController : Controller
     {
-        private IEmployeeRepository repo;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<IdentityUser> signInManager;
 
-        public AccountController(IEmployeeRepository repo)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
-            this.repo = repo;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
         [HttpGet]
         [Route("Register")]
@@ -26,14 +28,10 @@ namespace EmployeeManagement.Controllers
 
         [HttpPost]
         [Route("Register")]
-        public IActionResult Register(Employee employee)
+        public IActionResult Register(int a)
         {
 
-            if (ModelState.IsValid)
-            {
-                var emp = repo.Add(employee);
-                return RedirectToAction("GetEmployee", "Employees", new { id = emp.Id }); 
-            }
+           
             return View();
         }
     }

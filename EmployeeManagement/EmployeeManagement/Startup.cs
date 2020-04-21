@@ -3,6 +3,7 @@ using EmployeeManagement.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +27,10 @@ namespace EmployeeManagement
         {
             // Add Sql db services
             services.AddDbContextPool<AppDbContext>(opt => opt.UseSqlServer(this.config.GetConnectionString("EmployeeDBConnection")));
-            
+
+            // Add Identity service
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+
             // Adding mvc services
             services.AddMvc(mvcOptions => mvcOptions.EnableEndpointRouting = false);
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
@@ -39,16 +43,16 @@ namespace EmployeeManagement
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
+            }
 
             app.UseRouting();
 
             app.UseStaticFiles();
-            app.UseMvc();
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Route not found!!!");
-            });
-
+            app.UseAuthentication();
+            app.UseMvc();           
 
             //Inject ILogger<Startup> logger in Configure()
             //// Middleware 1

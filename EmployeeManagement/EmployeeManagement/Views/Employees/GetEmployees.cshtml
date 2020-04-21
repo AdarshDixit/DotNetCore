@@ -10,7 +10,7 @@
     <ul>
         @foreach (var employee in Model.Employees)
         {
-            var photoPath = "~/images/" + (employee.PhotoPath ?? "noimage.png");
+            var photoPath = employee.PhotoPath == null ? "~/images/noimage.png" : "~/images/"+(employee.PhotoPath);
             <li>
                 <div>
                     <img src="@photoPath" />
@@ -19,6 +19,10 @@
                 <p><b>Employee Name: </b>@employee.Name</p>
                 <p><b>Employee Designation: </b>@employee.Designation</p>
                 <p><b>Employee Department: </b>@employee.Department</p>
+                <div>
+                    <a asp-action="GetEmployee" asp-route-id="@employee.Id">Detail</a>
+                    <a asp-action="Edit" asp-route-id="@employee.Id">Edit</a>
+                </div>
             </li>
         }
     </ul>
