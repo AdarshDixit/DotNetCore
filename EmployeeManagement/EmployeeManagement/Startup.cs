@@ -29,7 +29,12 @@ namespace EmployeeManagement
             services.AddDbContextPool<AppDbContext>(opt => opt.UseSqlServer(this.config.GetConnectionString("EmployeeDBConnection")));
 
             // Add Identity service
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            services.AddIdentity<IdentityUser, IdentityRole>(opt => {
+                opt.Password.RequireLowercase = true;
+                opt.Password.RequireDigit = true;
+                opt.Password.RequiredUniqueChars = 1;
+             
+            }).AddEntityFrameworkStores<AppDbContext>();
 
             // Adding mvc services
             services.AddMvc(mvcOptions => mvcOptions.EnableEndpointRouting = false);
